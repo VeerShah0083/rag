@@ -132,22 +132,30 @@ def retrieve_relevant_chunks(question: str) -> str:
     return text_retrieved
 
 def ask_mistral(message: str, history: list):
-    """Process user message and generate a response"""
     print(f"Received message: {message}")  # Debugging line
     messages = []
-    
+
     # Convert history to ChatMessage format
-    for couple in history:
-        messages.append(ChatMessage(role="user", content=couple[0]))
-        messages.append(ChatMessage(role="assistant", content=couple[1]))
-    
+    for msg in history:
+        # Check if history item is a dictionary (type="messages" case)
+        if isinstance(msg, dict):
+            messages.append(ChatMessage(role=msg.get("role", "user"), content=msg.get("content", "")))
+        # Otherwise, assume tuple format (type="chat" case)
+        else:
+            messages.append(ChatMessage(role="user", content=msg[0]))
+            messages.append(ChatMessage(role="assistant", content=msg[1]))
+
     # Get relevant chunks from knowledge base
     retrieved_text = retrieve_relevant_chunks(message)
-    
+
     # Create prompt with retrieved context
-    prompt = f"Context from knowledge base:\n{retrieved_text}\n\nQuestion: {message}\n\nPlease answer based on the context provided."
+    prompt = (
+        f"Context from knowledge base:\n{retrieved_text}\n\n"
+        f"Question: {message}\n\n"
+        "Please answer based on the context provided."
+    )
     messages.append(ChatMessage(role="user", content=prompt))
-    
+
     # Stream the response
     full_response = ""
     try:
@@ -156,7 +164,7 @@ def ask_mistral(message: str, history: list):
     except Exception as e:
         print(f"Error during chat stream: {e}")  # Log any errors
         return "An error occurred while generating a response."
-    
+
     return full_response
 
 def add_pdf(files):
