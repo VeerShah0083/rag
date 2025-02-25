@@ -8,11 +8,11 @@ This project provides a chat interface that lets you ask questions about the con
 
 ## Directory Structure
 
-```
+
 veershah0083-rag/
 ├── app.py
 └── embeddings_cache.pkl
-```
+
 
 - **app.py**: The main application file that sets up the PDF knowledge base, processes PDFs, generates embeddings, and launches the Gradio chat interface.
 - **embeddings_cache.pkl**: A cache file used to store embeddings of PDF text chunks for faster startups.
@@ -51,7 +51,7 @@ veershah0083-rag/
 Open `app.py` and update the API key line:
 
 ```python
-mistral_api_key = "6mEENhDapV7fw5uVvvUvenytRVJ23ghV"  # Replace with your actual API key
+mistral_api_key = "MISTRAL_API_KEY"  # Replace with your actual API key
 ```
 
 ### 2. Prepare the Knowledge Base
@@ -86,10 +86,6 @@ This command will launch a Gradio web interface in your default browser.
 - **No PDFs Detected**: Ensure that the `knowledge_base` directory exists and contains valid PDF files.
 - **Cache Errors**: If there are issues with `embeddings_cache.pkl`, delete the file to force a rebuild of the embeddings.
 - **API or Model Errors**: Verify that your Mistral API key is valid and that you have a stable internet connection if required by the API.
-
-## License
-
-This project is licensed under the MIT License.
 
 ## Acknowledgements
 
